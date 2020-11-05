@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: reqwest-test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: reqwest-test
+  template:
+    metadata:
+      labels:
+        app: reqwest-test
+      name: reqwest-test
+    spec:
+    #   imagePullSecrets:
+    #     - name: ghcr
+      containers:
+        - name: reqwest-test
+          image: reqwest-test:latest
+          imagePullPolicy: Never
+          env:
+            - name: reqwest_test_url
+              value: "http://my-service:80"
+        #   args:
+        #     - --path=/
+        #     - --path=/sensor1
+        #     - --path=/sensor2
+        #   ports:
+        #     - name: http
+        #       containerPort: 8080
