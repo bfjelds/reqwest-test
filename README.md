@@ -27,3 +27,16 @@ reqwest-test url: "http://my-service:80"
 Failed to establish connection to http://my-service:80
 Error: error sending request for url (http://my-service/): error trying to connect: tcp connect error: Connection refused (os error 111)
 ```
+
+# Create DNS failure
+If I modify reqwest-test.yaml's env var `reqwest_test_url` to be something that does not exist (`http://my-serviceasdfas:80`), and reapply, I see this:
+```bash
+microk8s kubectl logs $(microk8s kubectl get pods | grep reqwest | grep -v Terminat | awk '{print $1}')
+
+reqwest_test_url: "http://my-serviceasdfas:80"
+Failed to establish connection to http://my-serviceasdfas:80
+Error: error sending request for url (http://my-serviceasdfas/): error trying to connect: dns error: failed to lookup address information: Temporary failure in name resolution
+reqwest_test_url: "http://my-serviceasdfas:80"
+Failed to establish connection to http://my-serviceasdfas:80
+Error: error sending request for url (http://my-serviceasdfas/): error trying to connect: dns error: failed to lookup address information: Temporary failure in name resolution
+```
