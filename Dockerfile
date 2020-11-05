@@ -3,7 +3,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
       g++ ca-certificates curl libssl-dev pkg-config
 RUN rustup component add rustfmt --toolchain 1.41.1-x86_64-unknown-linux-gnu
 
-WORKDIR /nessie
+WORKDIR /reqwest-test
 COPY Cargo.toml Cargo.lock ./
 
 # Create build for dependencies ... should only run when deps change
@@ -20,7 +20,7 @@ RUN ls -lh target/debug/reqwest-test
 FROM amd64/debian:buster-slim
 RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates libssl-dev openssl && \
       apt-get clean
-COPY --from=build ./nessie/target/debug/reqwest-test /reqwest-test
+COPY --from=build ./reqwest-test/target/debug/reqwest-test /reqwest-test
 
 # Expose port used by broker service
 # EXPOSE 8083
